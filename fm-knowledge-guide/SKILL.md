@@ -29,6 +29,9 @@ Determine which financial domain the user is asking about:
 | Collateral | `references/collateral-management.md` | CSA, margin calls, VM/IM, eligible collateral |
 | Trade Lifecycle | `references/trade-lifecycle.md` | Execution, confirmation, clearing, settlement |
 | Regulations | `references/regulatory-framework.md` | EMIR, Dodd-Frank, MiFID II, Basel III, UMR |
+| Risk Management | `references/risk-management.md` | VaR, PFE, CVA, Greeks, Stress Testing |
+| Market Data | `references/market-data.md` | Curves, Surfaces, Fixings, Bootstrapping |
+| Messaging | `references/messaging-standards.md` | SWIFT (MT/MX), FIX, FpML, ISO 20022 |
 | Terminology | `references/glossary.md` | Financial terms A-Z |
 
 ### Step 2: Load Relevant Reference
@@ -44,7 +47,14 @@ When explaining concepts:
 3. **Show the "How"**: Illustrate with practical examples
 4. **Connect to Systems**: Relate to IT system implementation
 
-### Step 4: Generate Learning Document
+### Step 4: Verify Content (Self-Correction)
+
+**CRITICAL**: Before generating the final document, verify your mental draft against the loaded reference file:
+1.  **Term Check**: Are all used terms present in the reference or standard industry glossaries?
+2.  **Logic Check**: Does the explained flow match the "Money/Asset Flow" framework?
+3.  **Hallucination Check**: Did I drag in a concept from a different domain (e.g., applying Equity rules to IRS)?
+
+### Step 5: Generate Learning Document
 
 **Always generate a comprehensive learning document** following these guidelines:
 
@@ -163,19 +173,20 @@ When explaining concepts:
 
 ---
 
-#### Appendix (optional)
+#### Appendix (ALWAYS include, with REAL data)
 ```markdown
 ## Appendix
 ### Glossary
 ### Reference Data
 ```
-- Always include: Overview, Core Concepts, System Implementation, Real-World Scenarios
+
+- Always include: Overview, Core Concepts, System Implementation, Real-World Scenarios, Appendix
 - Add Lifecycle section for any process/flow topics
 - Add Comparison sections when explaining differences (VM vs IM, Pledge vs Title Transfer)
 - Add Calculation section for topics involving formulas
 - Add Handling sections for operational topics
 
-### Step 5: Save to Project Docs Directory (REQUIRED)
+### Step 6: Save to Project Docs Directory (REQUIRED)
 
 **You MUST save the generated learning document to the project's docs directory.**
 
@@ -200,7 +211,7 @@ docs/fm-guide/[topic-name]-guide.md
 
 **After saving**, notify the user with the file path so they can review the generated document.
 
-### Step 6: Ensure Document Viewer Exists (REQUIRED)
+### Step 7: Ensure Document Viewer Exists (REQUIRED)
 
 **Before finishing, you MUST check and copy the viewer.html.**
 
@@ -220,7 +231,7 @@ if (!(Test-Path "docs/fm-guide/viewer.html")) {
 This ensures the document viewer is always available for browsing generated guides.
 The viewer dynamically lists all .md files in the same directory.
 
-### Step 7: Launch Document Viewer (OPTIONAL)
+### Step 8: Launch Document Viewer (OPTIONAL)
 
 If the user wants to view documents in browser, launch a local HTTP server:
 
@@ -262,14 +273,38 @@ npx -y http-server docs/fm-guide -p 0 -o /viewer.html
 - **Settlement Date**: When cash/securities move
 - **Maturity Date**: When the trade ends
 
-## Research Methodology
+## Analyst Mindset & Research (New Frameworks)
 
-When researching unfamiliar financial topics:
+When acting as a Bank Analyst, use these thinking frameworks before generating content:
 
-1. **Search authoritative sources**: ISDA, regulatory bodies, major banks' documentation
-2. **Verify with multiple sources**: Cross-reference information
-3. **Focus on practical application**: How it affects real banking systems
-4. **Include examples**: Concrete scenarios help understanding
+### 1. Risk-First Thinking
+> "Who carries the risk if this fails?"
+- Always identify Credit Risk (counterparty default) vs Operational Risk (process failure).
+- Explain mechanics in terms of risk mitigation.
+
+### 2. The Money/Asset Flow
+> "Where is the asset moving?"
+- Trace the exact movement of cash/securities.
+- Identify the legal ownership at each step (Pledge vs Title Transfer).
+
+### 3. System Impact Analysis
+> "What breaks if this field is wrong?"
+- Connect business concepts to specific database fields or API messages (SWIFT/FIX).
+- Highlight "Load Bearing" data points (e.g., Trade Date, Notional).
+
+### 4. Research Methodology
+1. **Source of Truth**: Prioritize ISDA, FpML, and Regulatory Texts (EMIR/Dodd-Frank).
+2. **Cross-Check**: Verify definitions across multiple jurisdictions (US vs EU often differ).
+3. **Concrete Examples**: Never leave a concept abstract; always provide a numerical or process example.
+
+## Anti-Patterns (NEVER List)
+
+> **CRITICAL**: The following behaviors ruin the credibility of the output.
+
+1.  **NEVER Invent Terms**: If you don't know the industry standard term (e.g., "Variation Margin"), do not invent one (e.g., "Daily Collateral Adjustment"). Use the `glossary.md` reference.
+2.  **NEVER Mix Jurisdictions**: Do not blend US rules (Dodd-Frank) with EU rules (EMIR) without explicit distinction. They have different reporting fields and timelines.
+3.  **NEVER Assume Simple Interest**: In financial markets, interest is almost always compounded or calculated with specific day-count conventions (ACT/360).
+4.  **NEVER Ignore Settlement Lag**: Trades rarely settle instantly (T+0). Always account for T+1, T+2 settlement cycles in process flows.
 
 ## Output Guidelines
 
