@@ -36,16 +36,35 @@ Determine which financial domain the user is asking about:
 
 ### Step 2: Load Relevant Reference
 
-Based on the user's question, load the appropriate reference file(s) to provide accurate, detailed information.
+**MANDATORY**: Based on the domain identified, you MUST read the entire reference file before generating content:
 
-### Step 3: Explain with Context
+| If user asks about... | MUST READ | Do NOT Load |
+|-----------------------|-----------|-------------|
+| CSA, margin, collateral, VM/IM | `references/collateral-management.md` | trade-lifecycle, derivatives |
+| Swaps, options, futures, forwards | `references/derivatives-basics.md` | collateral, regulatory |
+| Trade confirmation, clearing, settlement | `references/trade-lifecycle.md` | market-data, messaging |
+| EMIR, Dodd-Frank, UMR, Basel | `references/regulatory-framework.md` | derivatives, market-data |
+| VaR, PFE, CVA, Greeks | `references/risk-management.md` | messaging, regulatory |
+| Curves, Surfaces, Fixings | `references/market-data.md` | collateral, regulatory |
+| SWIFT, FIX, FpML, ISO 20022 | `references/messaging-standards.md` | risk-management |
+| Term definitions | `references/glossary.md` | (load in addition to domain file) |
 
-When explaining concepts:
+> ⚠️ **NEVER generate content without loading the relevant reference first.**
 
-1. **Start with the "Why"**: Explain the business purpose
-2. **Describe the "What"**: Define the concept clearly
-3. **Show the "How"**: Illustrate with practical examples
-4. **Connect to Systems**: Relate to IT system implementation
+### Step 2.5: Detect User Persona
+
+**Adapt content depth based on the user's role** (inferred from context or explicit):
+
+| Persona | Focus | Detection Hints |
+|---------|-------|------------------|
+| **Developer** | Data Models, API fields, Message schemas | mentions "database", "API", "schema" |
+| **Business Analyst** | Business Rules, CSA Clauses, Workflow logic | mentions "requirement", "workflow", "stakeholder" |
+| **Operations** | Daily processes, Exception handling | mentions "daily run", "exception", "dispute" |
+| **General** | Conceptual understanding | no specific role indicators |
+
+### Step 3: Context-Driven Explanation
+
+> Always connect business purpose → concept definition → practical example → IT system impact.
 
 ### Step 4: Verify Content (Self-Correction)
 
@@ -64,127 +83,14 @@ When explaining concepts:
 > 3. References section must link to REAL external URLs (official docs, not placeholders)
 > 4. Replace all `[Topic]`, `[Concept A]` placeholders with actual content
 
----
+**MANDATORY - READ ENTIRE FILE**: Before generating the document, you MUST load [`templates/learning-guide-template.md`](templates/learning-guide-template.md) for the complete structure and formatting rules.
 
-#### Document Structure
-
-```markdown
-# [Topic] Learning Guide
-
-## Overview
-- What this topic is and why it matters
-- Business context and industry background  
-- Target audience (roles/teams who need this)
-
-## Table of Contents
-<!-- DYNAMIC: Generate links based on actual sections included -->
-- [Section Name](#section-name)
-- [Another Section](#another-section)
-  - [Subsection](#subsection)
-...
-```
-
----
-
-#### Required Sections (ALWAYS include these)
-
-**1. Core Concepts**
-```markdown
-## Core Concepts
-### Terminology & Definitions
-### Conceptual Model (with Mermaid diagram)
-```
-
-**2. System Implementation**
-```markdown
-## System Implementation
-### Data Model (with ER diagram)
-### System Integration Points
-### Processing Logic
-```
-
-**3. Real-World Scenarios**
-```markdown
-## Real-World Scenarios
-### Scenario 1: [Normal Case]
-### Scenario 2: [Edge Case]  
-### Scenario 3: [Exception/Dispute]
-```
-
----
-
-#### Dynamic Sections (include when relevant to topic)
-
-**Lifecycle** - Include for process/flow topics (margin call, trade lifecycle, settlement)
-```markdown
-## [Topic] Lifecycle
-### End-to-End Flow (with sequence diagram)
-### Phase Breakdown (Trigger → Actions → Output → Exceptions)
-```
-
-**Comparisons** - Include when explaining differences (VM vs IM, Pledge vs Title Transfer)
-```markdown
-## [Concept A] vs [Concept B]
-| Aspect | A | B |
-|--------|---|---|
-| Purpose | ... | ... |
-```
-
-**Calculations** - Include for topics with formulas (margin calculation, haircut, interest)
-```markdown
-## Calculation & Formulas
-- Formula with explanation
-- Worked example with numbers
-- Common pitfalls
-```
-
-**Handling Scenarios** - Include for operational topics
-```markdown
-## Handling Scenarios
-### Normal Processing
-### Exception Handling
-### Dispute Resolution
-```
-
-**Best Practices** - Include for implementation guidance
-```markdown
-## Best Practices & Pitfalls
-### Do's
-### Don'ts
-```
-
----
-
-#### References Section (ALWAYS include, with REAL links)
-
-```markdown
-## References & Resources
-<!-- DYNAMIC: Search and include actual official URLs relevant to the topic -->
-```
-
-**Link to real external resources based on topic:**
-
-| Topic Area | Example Resources |
-|------------|-------------------|
-| Margin/Collateral | [ISDA](https://www.isda.org/), [UMR Guidelines](https://www.bis.org/bcbs/publ/d317.htm) |
-| Trading | [FpML](https://www.fpml.org/), [FIX Protocol](https://www.fixtrading.org/) |
-| Regulatory | [EMIR](https://eur-lex.europa.eu/), [Dodd-Frank](https://www.cftc.gov/), [Basel](https://www.bis.org/) |
-| Platforms | [Acadiasoft](https://www.acadiasoft.com/), [DTCC](https://www.dtcc.com/) |
-
----
-
-#### Appendix (ALWAYS include, with REAL data)
-```markdown
-## Appendix
-### Glossary
-### Reference Data
-```
-
+**Key Requirements**:
 - Always include: Overview, Core Concepts, System Implementation, Real-World Scenarios, Appendix
-- Add Lifecycle section for any process/flow topics
-- Add Comparison sections when explaining differences (VM vs IM, Pledge vs Title Transfer)
-- Add Calculation section for topics involving formulas
-- Add Handling sections for operational topics
+- Add Lifecycle section for process/flow topics
+- Add Comparison sections for explaining differences (VM vs IM, Pledge vs Title Transfer)
+- Add Calculation section for topics with formulas
+- All References URLs must be REAL, verifiable links (no placeholders)
 
 ### Step 6: Save to Project Docs Directory (REQUIRED)
 
@@ -303,8 +209,12 @@ When acting as a Bank Analyst, use these thinking frameworks before generating c
 
 1.  **NEVER Invent Terms**: If you don't know the industry standard term (e.g., "Variation Margin"), do not invent one (e.g., "Daily Collateral Adjustment"). Use the `glossary.md` reference.
 2.  **NEVER Mix Jurisdictions**: Do not blend US rules (Dodd-Frank) with EU rules (EMIR) without explicit distinction. They have different reporting fields and timelines.
-3.  **NEVER Assume Simple Interest**: In financial markets, interest is almost always compounded or calculated with specific day-count conventions (ACT/360).
+3.  **NEVER Assume Simple Interest**: In financial markets, interest is almost always compounded or calculated with specific day-count conventions (ACT/360, 30/360, ACT/365).
 4.  **NEVER Ignore Settlement Lag**: Trades rarely settle instantly (T+0). Always account for T+1, T+2 settlement cycles in process flows.
+5.  **NEVER Confuse VM and IM**: Variation Margin (daily MTM settlement) ≠ Initial Margin (upfront risk buffer). They have different calculation methods, timing, and regulatory drivers.
+6.  **NEVER Omit Day Count Convention**: Interest calculations MUST explicitly specify the convention (ACT/360 for money markets, 30/360 for bonds, ACT/365 for some jurisdictions).
+7.  **NEVER Ignore Netting Agreements**: Gross vs Net exposure under ISDA CSA can differ by 10x+. Always clarify whether values are gross or net.
+8.  **NEVER Use Placeholder Links**: All URLs in References section must be real, verifiable sources. Search for actual official documentation URLs.
 
 ## Output Guidelines
 
