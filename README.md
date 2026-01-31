@@ -1,41 +1,41 @@
 <div align="right">
-  <a href="README.md">中文</a> | <a href="README_EN.md">English</a>
+  <a href="README.md">English</a> | <a href="README_ZH.md">中文</a>
 </div>
 
 # FM Knowledge Guide
 
-> 🎓 帮助银行开发者和业务分析师快速掌握金融市场业务知识的 AI Skill
+> 🎓 AI Skill to help bank developers and business analysts master financial market knowledge
 
 ![Document Viewer UI](sample/img/ui.png)
 
 ---
 
-## ✨ 功能特点
+## ✨ Features
 
-| 功能 | 描述 |
-|------|------|
-| 📚 **知识覆盖全面** | 涵盖衍生品、抵押品管理、交易生命周期、监管框架等核心领域 |
-| 🎯 **角色自适应** | 根据用户角色（开发者/BA/运营）自动调整内容深度 |
-| 📊 **Mermaid 图表** | 自动生成流程图、时序图、ER 图等可视化内容 |
-| 🌐 **内置文档查看器** | 深色主题 Web 界面，支持 Markdown 渲染和图表展示 |
-| 📁 **自动归档** | 生成的学习文档自动保存到 `docs/fm-guide/` 目录 |
+| Feature | Description |
+|---------|-------------|
+| 📚 **Comprehensive Coverage** | Covers derivatives, collateral management, trade lifecycle, regulatory frameworks |
+| 🎯 **Role-Adaptive** | Automatically adjusts content depth based on user role (Developer/BA/Operations) |
+| 📊 **Mermaid Diagrams** | Auto-generates flowcharts, sequence diagrams, ER diagrams |
+| 🌐 **Built-in Doc Viewer** | Dark theme web UI with Markdown rendering and diagram support |
+| 📁 **Auto-Archive** | Generated docs automatically saved to `docs/fm-guide/` directory |
 
-## 📖 支持的主题
+## 📖 Supported Topics
 
-- **衍生品 (Derivatives)**: Swaps, Options, Futures, Forwards, IRS, CCS
-- **抵押品管理 (Collateral)**: CSA, Margin Call, VM/IM, Haircut, Threshold  
-- **交易生命周期 (Trade Lifecycle)**: Confirmation, Clearing, Settlement, DVP
-- **消息标准 (Messaging)**: SWIFT MT/MX, FIX, FpML, ISO 20022
-- **监管框架 (Regulations)**: EMIR, Dodd-Frank, MiFID II, Basel III, UMR
-- **风险管理 (Risk)**: VaR, PFE, CVA, Greeks
+- **Derivatives**: Swaps, Options, Futures, Forwards, IRS, CCS
+- **Collateral Management**: CSA, Margin Call, VM/IM, Haircut, Threshold
+- **Trade Lifecycle**: Confirmation, Clearing, Settlement, DVP
+- **Messaging Standards**: SWIFT MT/MX, FIX, FpML, ISO 20022
+- **Regulations**: EMIR, Dodd-Frank, MiFID II, Basel III, UMR
+- **Risk Management**: VaR, PFE, CVA, Greeks
 
 ---
 
-## 🚀 使用方式
+## 🚀 Usage
 
-### 方式一：Workflow 触发（推荐）
+### Method 1: Workflow Trigger (Recommended)
 
-在支持 Workflow 的 AI 编辑器中，直接使用 `@/fm-knowledge-guider` 触发：
+In AI editors with workflow support, use `@/fm-knowledge-guider` to trigger:
 
 ```
 @/fm-knowledge-guider margin call
@@ -43,57 +43,57 @@
 @/fm-knowledge-guider CSA
 ```
 
-**特点**：
-- ✅ 无需安装，开箱即用
-- ✅ 自动加载相关参考资料
-- ✅ 自动生成文档并启动查看器
+**Advantages**:
+- ✅ No installation required, works out of the box
+- ✅ Automatically loads relevant reference materials
+- ✅ Auto-generates docs and launches viewer
 
 ---
 
-### 方式二：Skill 安装
+### Method 2: Skill Installation
 
-通过 `npx skills` 命令安装到本地：
+Install locally via `npx skills` command:
 
 ```bash
-# 安装 skill
+# Install skill
 npx skills add Kooooooma/skills@fm-knowledge-guide -g -y
 
-# 验证安装
+# Verify installation
 npx skills list | grep fm-knowledge-guide
 ```
 
-安装后，AI 助手会自动识别金融市场相关问题并调用此 Skill。
+Once installed, the AI assistant will automatically recognize financial market questions and invoke this skill.
 
 ---
 
-## 📂 输出说明
+## 📂 Output
 
-生成的学习文档保存在项目的 `docs/fm-guide/` 目录：
+Generated learning documents are saved in the project's `docs/fm-guide/` directory:
 
 ```
 docs/fm-guide/
-├── margin-call-guide.md    # Margin Call 学习指南
-├── swift-guide.md          # SWIFT 消息标准指南
-├── csa-guide.md            # CSA 抵押品协议指南
-└── viewer.html             # 文档查看器
+├── margin-call-guide.md    # Margin Call Learning Guide
+├── swift-guide.md          # SWIFT Messaging Standards Guide
+├── csa-guide.md            # CSA Collateral Agreement Guide
+└── viewer.html             # Document Viewer
 ```
 
-### 启动文档查看器
+### Launch Document Viewer
 
 ```bash
 npx -y http-server docs/fm-guide -p 0 -o /viewer.html
 ```
 
-浏览器将自动打开，左侧边栏显示所有已生成的文档，右侧渲染 Markdown 内容和 Mermaid 图表。
+Browser will auto-open with sidebar showing all generated docs, and main panel rendering Markdown content with Mermaid diagrams.
 
 ---
 
-## 🏗️ 项目结构
+## 🏗️ Project Structure
 
 ```
 fm-knowledge-guide/
-├── SKILL.md                 # Skill 主入口和工作流定义
-├── references/              # 金融领域参考资料
+├── SKILL.md                 # Skill entry point and workflow definition
+├── references/              # Financial domain reference materials
 │   ├── collateral-management.md
 │   ├── derivatives-basics.md
 │   ├── trade-lifecycle.md
@@ -104,20 +104,20 @@ fm-knowledge-guide/
 │   ├── domain-overview.md
 │   └── glossary.md
 └── templates/
-    ├── learning-guide-template.md  # 文档生成模板
-    └── viewer.html                 # Web 查看器模板
+    ├── learning-guide-template.md  # Document generation template
+    └── viewer.html                 # Web viewer template
 ```
 
 ---
 
-## 📝 示例交互
+## 📝 Example Interactions
 
-| 用户输入 | 生成内容 |
-|----------|----------|
-| `margin call` | Margin Call 完整生命周期、VM vs IM 对比、计算公式 |
-| `SWIFT` | MT/MX 消息格式、ISO 20022 迁移、字段映射 |
-| `CSA` | ISDA 框架、抵押品条款、系统实现要点 |
-| `trade lifecycle` | 交易前/执行/交易后全流程、T+2 结算 |
+| User Input | Generated Content |
+|------------|-------------------|
+| `margin call` | Complete lifecycle, VM vs IM comparison, calculation formulas |
+| `SWIFT` | MT/MX message formats, ISO 20022 migration, field mapping |
+| `CSA` | ISDA framework, collateral terms, system implementation |
+| `trade lifecycle` | Pre-trade/execution/post-trade flow, T+2 settlement |
 
 ---
 
