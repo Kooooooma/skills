@@ -1,0 +1,12 @@
+[
+  {
+    "path": "./margin-call-guide.md",
+    "title": "Margin Call Guide",
+    "filename": "margin-call-guide.md"
+  },
+  {
+    "path": "./swift-guide.md",
+    "title": "Swift Guide",
+    "filename": "swift-guide.md"
+  }
+]

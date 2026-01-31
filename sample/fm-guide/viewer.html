@@ -369,43 +369,58 @@
         let documents = [];
         let activeDoc = null;
 
-        // Fetch document list by parsing http-server directory listing
+        // Fetch document list - try docs.json first (for static hosting like Vercel),
+        // then fallback to directory listing (for http-server)
         async function loadDocuments() {
             const docList = document.getElementById('docList');
 
             try {
-                // Fetch the directory listing from http-server
-                // Since viewer.html is not index.html, accessing ./ returns directory listing
-                const response = await fetch('./');
+                // First try to load from docs.json (static file for Vercel/static hosting)
+                let docsLoaded = false;
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch directory listing');
+                try {
+                    const jsonResponse = await fetch('./docs.json');
+                    if (jsonResponse.ok) {
+                        documents = await jsonResponse.json();
+                        docsLoaded = true;
+                    }
+                } catch (e) {
+                    // docs.json not available, will try directory listing
                 }
 
-                const html = await response.text();
+                // Fallback: Fetch the directory listing from http-server
+                if (!docsLoaded) {
+                    const response = await fetch('./');
 
-                // Parse the directory listing HTML
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-
-                // http-server generates links for each file in the directory
-                const links = doc.querySelectorAll('a');
-
-                documents = [];
-                links.forEach(link => {
-                    const href = link.getAttribute('href');
-                    // Only include .md files (excluding viewer.html and other non-md files)
-                    if (href && href.endsWith('.md')) {
-                        const filename = href.split('/').pop();
-                        const name = filename.replace('.md', '').replace(/-guide$/, '').replace(/-/g, ' ');
-                        const title = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                        documents.push({
-                            path: `./${filename}`,
-                            title: title + ' Guide',
-                            filename: filename
-                        });
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch directory listing');
                     }
-                });
+
+                    const html = await response.text();
+
+                    // Parse the directory listing HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    // http-server generates links for each file in the directory
+                    const links = doc.querySelectorAll('a');
+
+                    documents = [];
+                    links.forEach(link => {
+                        const href = link.getAttribute('href');
+                        // Only include .md files (excluding viewer.html and other non-md files)
+                        if (href && href.endsWith('.md')) {
+                            const filename = href.split('/').pop();
+                            const name = filename.replace('.md', '').replace(/-guide$/, '').replace(/-/g, ' ');
+                            const title = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                            documents.push({
+                                path: `./${filename}`,
+                                title: title + ' Guide',
+                                filename: filename
+                            });
+                        }
+                    });
+                }
 
                 // Sort documents alphabetically by title
                 documents.sort((a, b) => a.title.localeCompare(b.title));
