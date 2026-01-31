@@ -35,6 +35,22 @@
 
 ### Method 1: Workflow Trigger (Recommended)
 
+**Step 1: Install Workflow File**
+
+Copy the workflow file from the project to your local `.agent/workflows/` directory:
+
+```bash
+# Create workflows directory (if not exists)
+mkdir -p .agent/workflows
+
+# Copy workflow file
+cp fm-knowledge-guide/.agent/workflows/fm-knowledge-guider.md .agent/workflows/
+```
+
+Or manually create `.agent/workflows/fm-knowledge-guider.md` with the content from this repository.
+
+**Step 2: Use in AI Editor**
+
 In AI editors with workflow support, use `@/fm-knowledge-guider` to trigger:
 
 ```
@@ -44,7 +60,6 @@ In AI editors with workflow support, use `@/fm-knowledge-guider` to trigger:
 ```
 
 **Advantages**:
-- ✅ No installation required, works out of the box
 - ✅ Automatically loads relevant reference materials
 - ✅ Auto-generates docs and launches viewer
 

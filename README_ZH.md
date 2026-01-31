@@ -35,7 +35,23 @@
 
 ### 方式一：Workflow 触发（推荐）
 
-在支持 Workflow 的 AI 编辑器中，直接使用 `@/fm-knowledge-guider` 触发：
+**第一步：安装 Workflow 文件**
+
+将项目中的 workflow 文件复制到本地 `.agent/workflows/` 目录：
+
+```bash
+# 创建 workflows 目录（如不存在）
+mkdir -p .agent/workflows
+
+# 复制 workflow 文件
+cp fm-knowledge-guide/.agent/workflows/fm-knowledge-guider.md .agent/workflows/
+```
+
+或者手动创建 `.agent/workflows/fm-knowledge-guider.md`，内容从本仓库复制。
+
+**第二步：在 AI 编辑器中使用**
+
+在支持 Workflow 的 AI 编辑器中，使用 `@/fm-knowledge-guider` 触发：
 
 ```
 @/fm-knowledge-guider margin call
@@ -44,7 +60,6 @@
 ```
 
 **特点**：
-- ✅ 无需安装，开箱即用
 - ✅ 自动加载相关参考资料
 - ✅ 自动生成文档并启动查看器
 
