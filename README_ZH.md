@@ -71,10 +71,10 @@ cp fm-knowledge-guide/.agent/workflows/fm-knowledge-guider.md .agent/workflows/
 
 ```bash
 # 安装 skill
-npx skills add Kooooooma/skills@fm-knowledge-guide -g -y
+npx skills add Kooooooma/skills@fm-knowledge-guide -g
 
 # 验证安装
-npx skills list | grep fm-knowledge-guide
+npx skills list -g | grep fm-knowledge-guide
 ```
 
 安装后，AI 助手会自动识别金融市场相关问题并调用此 Skill。

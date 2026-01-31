@@ -71,10 +71,10 @@ Install locally via `npx skills` command:
 
 ```bash
 # Install skill
-npx skills add Kooooooma/skills@fm-knowledge-guide -g -y
+npx skills add Kooooooma/skills@fm-knowledge-guide -g
 
 # Verify installation
-npx skills list | grep fm-knowledge-guide
+npx skills list -g | grep fm-knowledge-guide
 ```
 
 Once installed, the AI assistant will automatically recognize financial market questions and invoke this skill.
