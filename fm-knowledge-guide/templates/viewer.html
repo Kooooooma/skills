@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Market Knowledge Base</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --border: #30363d;
+            --success: #3fb950;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            min-width: 300px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+        }
+
+        .sidebar-header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-header h1::before {
+            content: '📚';
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .doc-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .doc-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+        }
+
+        .doc-item:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--border);
+        }
+
+        .doc-item.active {
+            background: rgba(88, 166, 255, 0.15);
+            border-color: var(--accent);
+        }
+
+        .doc-item-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .doc-item-title::before {
+            content: '📄';
+            font-size: 12px;
+        }
+
+        .doc-item.active .doc-item-title::before {
+            content: '📖';
+        }
+
+        .doc-item-path {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-family: monospace;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .content-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .content-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 48px;
+        }
+
+        /* Markdown Styles */
+        .markdown-body {
+            line-height: 1.7;
+            max-width: 900px;
+        }
+
+        .markdown-body h1 {
+            font-size: 2em;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.3em;
+            margin-bottom: 16px;
+            margin-top: 24px;
+        }
+
+        .markdown-body h2 {
+            font-size: 1.5em;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.3em;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body h3 {
+            font-size: 1.25em;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body p {
+            margin-bottom: 16px;
+        }
+
+        .markdown-body ul,
+        .markdown-body ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body li {
+            margin-bottom: 4px;
+        }
+
+        .markdown-body code {
+            background: var(--bg-tertiary);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 85%;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        .markdown-body pre {
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body pre code {
+            background: none;
+            padding: 0;
+            font-size: 85%;
+        }
+
+        .markdown-body table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body th,
+        .markdown-body td {
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .markdown-body th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+        }
+
+        .markdown-body blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .markdown-body hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 24px 0;
+        }
+
+        .markdown-body a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-body strong {
+            font-weight: 600;
+        }
+
+        /* Mermaid diagrams */
+        .mermaid {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* Welcome state */
+        .welcome {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .welcome h2 {
+            font-size: 24px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .welcome p {
+            font-size: 14px;
+        }
+
+        .welcome-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>FM Knowledge Base</h1>
+                <p>Financial Market Learning Guides</p>
+            </div>
+            <div class="doc-list" id="docList">
+                <div class="loading">Loading documents...</div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="content-header" id="contentHeader" style="display: none;">
+                <h2 id="docTitle">Document Title</h2>
+            </header>
+            <div class="content-body" id="contentBody">
+                <div class="welcome">
+                    <div class="welcome-icon">📚</div>
+                    <h2>Welcome to FM Knowledge Base</h2>
+                    <p>Select a document from the sidebar to view its contents</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#58a6ff',
+                primaryTextColor: '#e6edf3',
+                primaryBorderColor: '#30363d',
+                lineColor: '#8b949e',
+                secondaryColor: '#21262d',
+                tertiaryColor: '#161b22'
+            }
+        });
+
+        // State
+        let documents = [];
+        let activeDoc = null;
+
+        // Fetch document list by parsing http-server directory listing
+        async function loadDocuments() {
+            const docList = document.getElementById('docList');
+
+            try {
+                // Fetch the directory listing from http-server
+                // Since viewer.html is not index.html, accessing ./ returns directory listing
+                const response = await fetch('./');
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch directory listing');
+                }
+
+                const html = await response.text();
+
+                // Parse the directory listing HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                // http-server generates links for each file in the directory
+                const links = doc.querySelectorAll('a');
+
+                documents = [];
+                links.forEach(link => {
+                    const href = link.getAttribute('href');
+                    // Only include .md files (excluding viewer.html and other non-md files)
+                    if (href && href.endsWith('.md')) {
+                        const filename = href.split('/').pop();
+                        const name = filename.replace('.md', '').replace(/-guide$/, '').replace(/-/g, ' ');
+                        const title = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        documents.push({
+                            path: `./${filename}`,
+                            title: title + ' Guide',
+                            filename: filename
+                        });
+                    }
+                });
+
+                // Sort documents alphabetically by title
+                documents.sort((a, b) => a.title.localeCompare(b.title));
+
+                renderDocList();
+
+            } catch (error) {
+                console.error('Error loading documents:', error);
+                docList.innerHTML = `
+                    <div class="empty-state">
+                        <p>Failed to load documents</p>
+                        <p style="font-size: 12px; margin-top: 8px;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render document list
+        function renderDocList() {
+            const docList = document.getElementById('docList');
+
+            if (documents.length === 0) {
+                docList.innerHTML = `
+                    <div class="empty-state">
+                        <p>No documents found</p>
+                        <p style="font-size: 12px; margin-top: 8px;">
+                            Generate documents using the fm-knowledge-guide skill
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            docList.innerHTML = documents.map((doc, index) => `
+                <div class="doc-item" data-index="${index}" onclick="loadDocument(${index})">
+                    <div class="doc-item-title">${doc.title}</div>
+                    <div class="doc-item-path">${doc.filename}</div>
+                </div>
+            `).join('');
+        }
+
+        // Load and render document
+        async function loadDocument(index) {
+            const doc = documents[index];
+            if (!doc) return;
+
+            // Update active state
+            document.querySelectorAll('.doc-item').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+
+            // Show loading
+            const contentBody = document.getElementById('contentBody');
+            contentBody.innerHTML = '<div class="loading">Loading document...</div>';
+
+            try {
+                const response = await fetch(doc.path);
+                if (!response.ok) throw new Error('Failed to load document');
+
+                const markdown = await response.text();
+
+                // Show header
+                document.getElementById('contentHeader').style.display = 'block';
+                document.getElementById('docTitle').textContent = doc.title;
+
+                // Render markdown
+                const html = marked.parse(markdown);
+                contentBody.innerHTML = `<div class="markdown-body">${html}</div>`;
+
+                // Process Mermaid diagrams
+                await processMermaid();
+
+            } catch (error) {
+                contentBody.innerHTML = `
+                    <div class="empty-state">
+                        <p>Failed to load document</p>
+                        <p style="font-size: 12px; margin-top: 8px;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Process Mermaid code blocks
+        async function processMermaid() {
+            const codeBlocks = document.querySelectorAll('pre code.language-mermaid');
+
+            for (const block of codeBlocks) {
+                const pre = block.parentElement;
+                const code = block.textContent;
+
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = code;
+
+                pre.parentNode.replaceChild(div, pre);
+            }
+
+            // Re-run Mermaid
+            await mermaid.run();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadDocuments);
+    </script>
+</body>
+
+</html>
