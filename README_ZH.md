@@ -2,15 +2,19 @@
   <a href="README_ZH.md">中文</a> | <a href="README.md">English</a>
 </div>
 
-# FM Knowledge Guide
+# Koma Skills
+
+> 🧰 精选 AI Skill 合集，用于专业领域任务
+
+---
+
+## 📦 技能列表
+
+### 📚 FM Knowledge Guide
 
 > 🎓 帮助银行开发者和业务分析师快速掌握金融市场业务知识的 AI Skill
 
 ![Document Viewer UI](sample/img/ui.png)
-
----
-
-## ✨ 功能特点
 
 | 功能 | 描述 |
 |------|------|
@@ -20,90 +24,20 @@
 | 🌐 **内置文档查看器** | 深色主题 Web 界面，支持 Markdown 渲染和图表展示 |
 | 📁 **自动归档** | 生成的学习文档自动保存到 `docs/fm-guide/` 目录 |
 
-## 📖 支持的主题
+**支持的主题**: 衍生品、抵押品管理、交易生命周期、消息标准、监管框架、风险管理
 
-- **衍生品 (Derivatives)**: Swaps, Options, Futures, Forwards, IRS, CCS
-- **抵押品管理 (Collateral)**: CSA, Margin Call, VM/IM, Haircut, Threshold  
-- **交易生命周期 (Trade Lifecycle)**: Confirmation, Clearing, Settlement, DVP
-- **消息标准 (Messaging)**: SWIFT MT/MX, FIX, FpML, ISO 20022
-- **监管框架 (Regulations)**: EMIR, Dodd-Frank, MiFID II, Basel III, UMR
-- **风险管理 (Risk)**: VaR, PFE, CVA, Greeks
-
----
-
-## 🚀 使用方式
-
-### 方式一：Workflow 触发（推荐）
-
-**第一步：安装 Workflow 文件**
-
-将项目中的 workflow 文件复制到本地 `.agent/workflows/` 目录：
+**使用方式**:
 
 ```bash
-# 创建 workflows 目录（如不存在）
-mkdir -p .agent/workflows
-
-# 复制 workflow 文件
-cp fm-knowledge-guide/.agent/workflows/fm-knowledge-guider.md .agent/workflows/
-```
-
-或者手动创建 `.agent/workflows/fm-knowledge-guider.md`，内容从本仓库复制。
-
-**第二步：在 AI 编辑器中使用**
-
-在支持 Workflow 的 AI 编辑器中，使用 `@/fm-knowledge-guider` 触发：
-
-```
+# Workflow 触发（推荐）
 @/fm-knowledge-guider margin call
-@/fm-knowledge-guider SWIFT
-@/fm-knowledge-guider CSA
-```
 
-**特点**：
-- ✅ 自动加载相关参考资料
-- ✅ 自动生成文档并启动查看器
-
----
-
-### 方式二：Skill 安装
-
-通过 `npx skills` 命令安装到本地：
-
-```bash
-# 安装 skill
+# Skill 安装
 npx skills add Kooooooma/skills@fm-knowledge-guide -g
-
-# 验证安装
-npx skills list -g | grep fm-knowledge-guide
 ```
 
-安装后，AI 助手会自动识别金融市场相关问题并调用此 Skill。
-
----
-
-## 📂 输出说明
-
-生成的学习文档保存在项目的 `docs/fm-guide/` 目录：
-
-```
-docs/fm-guide/
-├── margin-call-guide.md    # Margin Call 学习指南
-├── swift-guide.md          # SWIFT 消息标准指南
-├── csa-guide.md            # CSA 抵押品协议指南
-└── viewer.html             # 文档查看器
-```
-
-### 启动文档查看器
-
-```bash
-npx -y http-server docs/fm-guide -p 0 -o /viewer.html
-```
-
-浏览器将自动打开，左侧边栏显示所有已生成的文档，右侧渲染 Markdown 内容和 Mermaid 图表。
-
----
-
-## 🏗️ 项目结构
+<details>
+<summary>📂 项目结构</summary>
 
 ```
 fm-knowledge-guide/
@@ -123,16 +57,55 @@ fm-knowledge-guide/
     └── viewer.html                 # Web 查看器模板
 ```
 
+</details>
+
 ---
 
-## 📝 示例交互
+### 🛡️ Code Security Scanner
 
-| 用户输入 | 生成内容 |
+> 🔍 扫描代码仓库安全威胁的 AI Skill — 数据外泄、后门暴露、恶意代码植入、供应链攻击检测
+
+| 功能 | 描述 |
+|------|------|
+| 🔴 **数据外泄检测** | 检测凭证/令牌是否被发送到外部服务器 |
+| 🔴 **后门检测** | 发现隐藏端点、反向 Shell、未文档化的远程访问入口 |
+| 🔴 **恶意代码检测** | 识别 `eval()`、代码混淆、`postinstall` 脚本漏洞利用 |
+| 🟡 **依赖链风险** | 审计 npm 依赖的仿冒包、已知漏洞包 |
+| 🟡 **文件系统风险** | 检测对 `~/.ssh/`、浏览器 Cookie、凭证存储的读取行为 |
+
+**优化语言**: TypeScript / JavaScript / Node.js 项目
+
+**使用方式**:
+
+```bash
+# Skill 安装
+npx skills add Kooooooma/skills@code-security-scanner -g
+```
+
+**示例交互**:
+
+| 用户输入 | 扫描范围 |
 |----------|----------|
-| `margin call` | Margin Call 完整生命周期、VM vs IM 对比、计算公式 |
-| `SWIFT` | MT/MX 消息格式、ISO 20022 迁移、字段映射 |
-| `CSA` | ISDA 框架、抵押品条款、系统实现要点 |
-| `trade lifecycle` | 交易前/执行/交易后全流程、T+2 结算 |
+| `扫描这个项目的安全威胁` | 完整 5 阶段审计 |
+| `检查这个代码库是否有后门` | 后门检测 |
+| `审计 npm 依赖` | 依赖链分析 |
+| `检查是否有数据外泄` | 凭证泄漏检测 |
+
+<details>
+<summary>📂 项目结构</summary>
+
+```
+code-security-scanner/
+├── SKILL.md                 # Skill 主入口和扫描工作流
+└── references/              # 检测规则参考
+    ├── data-exfiltration.md     # 🔴 凭证/令牌泄漏模式
+    ├── backdoor-detection.md    # 🔴 反向 Shell、隐藏端点模式
+    ├── malicious-code-patterns.md # 🔴 eval、代码混淆、postinstall 漏洞
+    ├── dependency-risks.md      # 🟡 供应链攻击模式
+    └── filesystem-risks.md      # 🟡 敏感文件访问模式
+```
+
+</details>
 
 ---
 

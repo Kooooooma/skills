@@ -2,15 +2,19 @@
   <a href="README.md">English</a> | <a href="README_ZH.md">中文</a>
 </div>
 
-# FM Knowledge Guide
+# Koma Skills
+
+> 🧰 A curated collection of AI Skills for specialized domain tasks
+
+---
+
+## 📦 Skills
+
+### 📚 FM Knowledge Guide
 
 > 🎓 AI Skill to help bank developers and business analysts master financial market knowledge
 
 ![Document Viewer UI](sample/img/ui.png)
-
----
-
-## ✨ Features
 
 | Feature | Description |
 |---------|-------------|
@@ -20,90 +24,20 @@
 | 🌐 **Built-in Doc Viewer** | Dark theme web UI with Markdown rendering and diagram support |
 | 📁 **Auto-Archive** | Generated docs automatically saved to `docs/fm-guide/` directory |
 
-## 📖 Supported Topics
+**Supported Topics**: Derivatives, Collateral Management, Trade Lifecycle, Messaging Standards, Regulations, Risk Management
 
-- **Derivatives**: Swaps, Options, Futures, Forwards, IRS, CCS
-- **Collateral Management**: CSA, Margin Call, VM/IM, Haircut, Threshold
-- **Trade Lifecycle**: Confirmation, Clearing, Settlement, DVP
-- **Messaging Standards**: SWIFT MT/MX, FIX, FpML, ISO 20022
-- **Regulations**: EMIR, Dodd-Frank, MiFID II, Basel III, UMR
-- **Risk Management**: VaR, PFE, CVA, Greeks
-
----
-
-## 🚀 Usage
-
-### Method 1: Workflow Trigger (Recommended)
-
-**Step 1: Install Workflow File**
-
-Copy the workflow file from the project to your local `.agent/workflows/` directory:
+**Usage**:
 
 ```bash
-# Create workflows directory (if not exists)
-mkdir -p .agent/workflows
-
-# Copy workflow file
-cp fm-knowledge-guide/.agent/workflows/fm-knowledge-guider.md .agent/workflows/
-```
-
-Or manually create `.agent/workflows/fm-knowledge-guider.md` with the content from this repository.
-
-**Step 2: Use in AI Editor**
-
-In AI editors with workflow support, use `@/fm-knowledge-guider` to trigger:
-
-```
+# Workflow trigger (recommended)
 @/fm-knowledge-guider margin call
-@/fm-knowledge-guider SWIFT
-@/fm-knowledge-guider CSA
-```
 
-**Advantages**:
-- ✅ Automatically loads relevant reference materials
-- ✅ Auto-generates docs and launches viewer
-
----
-
-### Method 2: Skill Installation
-
-Install locally via `npx skills` command:
-
-```bash
-# Install skill
+# Skill installation
 npx skills add Kooooooma/skills@fm-knowledge-guide -g
-
-# Verify installation
-npx skills list -g | grep fm-knowledge-guide
 ```
 
-Once installed, the AI assistant will automatically recognize financial market questions and invoke this skill.
-
----
-
-## 📂 Output
-
-Generated learning documents are saved in the project's `docs/fm-guide/` directory:
-
-```
-docs/fm-guide/
-├── margin-call-guide.md    # Margin Call Learning Guide
-├── swift-guide.md          # SWIFT Messaging Standards Guide
-├── csa-guide.md            # CSA Collateral Agreement Guide
-└── viewer.html             # Document Viewer
-```
-
-### Launch Document Viewer
-
-```bash
-npx -y http-server docs/fm-guide -p 0 -o /viewer.html
-```
-
-Browser will auto-open with sidebar showing all generated docs, and main panel rendering Markdown content with Mermaid diagrams.
-
----
-
-## 🏗️ Project Structure
+<details>
+<summary>📂 Project Structure</summary>
 
 ```
 fm-knowledge-guide/
@@ -123,16 +57,55 @@ fm-knowledge-guide/
     └── viewer.html                 # Web viewer template
 ```
 
+</details>
+
 ---
 
-## 📝 Example Interactions
+### 🛡️ Code Security Scanner
 
-| User Input | Generated Content |
-|------------|-------------------|
-| `margin call` | Complete lifecycle, VM vs IM comparison, calculation formulas |
-| `SWIFT` | MT/MX message formats, ISO 20022 migration, field mapping |
-| `CSA` | ISDA framework, collateral terms, system implementation |
-| `trade lifecycle` | Pre-trade/execution/post-trade flow, T+2 settlement |
+> 🔍 AI Skill to scan code repositories for security threats — data exfiltration, backdoors, malicious code, supply-chain attacks
+
+| Feature | Description |
+|---------|-------------|
+| 🔴 **Data Exfiltration** | Detects credentials/tokens being sent to external servers |
+| 🔴 **Backdoor Detection** | Finds hidden endpoints, reverse shells, undocumented remote access |
+| 🔴 **Malicious Code** | Identifies `eval()`, obfuscation, `postinstall` exploits |
+| 🟡 **Dependency Risks** | Audits npm dependencies for typosquatting, vulnerable packages |
+| 🟡 **Filesystem Risks** | Detects `~/.ssh/`, browser cookies, credential store access |
+
+**Optimized for**: TypeScript / JavaScript / Node.js projects
+
+**Usage**:
+
+```bash
+# Skill installation
+npx skills add Kooooooma/skills@code-security-scanner -g
+```
+
+**Example prompts**:
+
+| User Input | Scan Scope |
+|------------|------------|
+| `scan this project for security threats` | Full 5-phase audit |
+| `check for backdoors in this codebase` | Backdoor detection focus |
+| `audit npm dependencies` | Dependency chain analysis |
+| `check for data exfiltration` | Credential leak detection |
+
+<details>
+<summary>📂 Project Structure</summary>
+
+```
+code-security-scanner/
+├── SKILL.md                 # Skill entry point and scan workflow
+└── references/              # Detection pattern references
+    ├── data-exfiltration.md     # 🔴 Credential/token leak patterns
+    ├── backdoor-detection.md    # 🔴 Reverse shell, hidden endpoint patterns
+    ├── malicious-code-patterns.md # 🔴 eval, obfuscation, postinstall exploits
+    ├── dependency-risks.md      # 🟡 Supply-chain attack patterns
+    └── filesystem-risks.md      # 🟡 Sensitive file access patterns
+```
+
+</details>
 
 ---
 
